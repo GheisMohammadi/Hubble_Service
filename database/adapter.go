@@ -1,39 +1,29 @@
 package database
 
-//Account struct in blocks
-type Account struct {
-	Address    string
-	PublicKey  string
-	Balance    float64
-	Permission string
-	Sequence   int64
-	Code       string
-	ID         int
-}
-
-//Account struct in blocks
-type Block struct {
-	ID             int
-	Height         int
-	Block_Hash     string
-	Pre_Block_Hash string
-	Time_Stamp     string
-	Txn_Counts     int
-}
+import (
+	hsBC "github.com/gallactic/hubble_server/blockchain"
+)
 
 //Adapter for data base
 type Adapter interface {
 	Connect() error
-	Disconnect()
+	Disconnect() error
 
 	//Account Handling
-	InsertAccount(acc *Account) error
-	UpdateAccount(id int, acc *Account) error
-	GetAccount(id int) (*Account, error)
+	InsertAccount(acc *hsBC.Account) error
+	UpdateAccount(id int, acc *hsBC.Account) error
+	GetAccount(id int) (*hsBC.Account, error)
+	GetAccountsTableLastID() (uint64, error)
 
 	//Blocks Handling
-	InsertBlock(acc *Account) error
-	UpdateBlock(id int, acc *Account) error
-	GetBlock(id int) (*Account, error)
+	InsertBlock(b *hsBC.Block) error
+	UpdateBlock(id int, b *hsBC.Block) error
+	GetBlock(id int) (*hsBC.Block, error)
 	GetBlocksTableLastID() (uint64, error)
+
+	//Transactions Handling
+	InsertTx(b *hsBC.Transaction) error
+	UpdateTx(id int, b *hsBC.Transaction) error
+	GetTx(hash string) (*hsBC.Transaction, error)
+	GetTXsTableLastID() (uint64, error)
 }
